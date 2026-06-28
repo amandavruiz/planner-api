@@ -96,10 +96,3 @@ O workflow de CI está em [.github/workflows/ci.yml](.github/workflows/ci.yml).
 ### Relatório
 
 A pipeline armazena o diretório `reports/robot` como artifact. Esse diretório inclui os arquivos gerados pelo Robot Framework, como `log.html`, `report.html` e `output.xml`.
-
-## Entrega
-
-Para a entrega da atividade, utilizar:
-
-1. URL do repositório GitHub com a solução.
-2. Evidência de uma execução bem-sucedida da pipeline no GitHub Actions.

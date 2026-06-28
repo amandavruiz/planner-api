@@ -1,0 +1,15 @@
+[
+  {
+    "caseName": "Delete existing study plan",
+    "existingPlan": true,
+    "initialName": "Plan To Delete",
+    "expectedStatus": 204
+  },
+  {
+    "caseName": "Delete nonexistent study plan",
+    "existingPlan": false,
+    "planId": "plan_99999",
+    "expectedStatus": 404,
+    "expectedMessage": "Plan not found"
+  }
+]

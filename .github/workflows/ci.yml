@@ -1,0 +1,118 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "master"]
+  workflow_dispatch:
+  schedule:
+    # Executa diariamente as 03:00 UTC
+    - cron: "0 3 * * *"
+  pull_request:
+    branches: ["main", "master"]
+
+jobs:
+  build-and-smoke-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install test dependencies
+        run: pip install -r requirements.txt
+
+      - name: Validate JavaScript syntax
+        run: |
+          find src -name "*.js" -print0 | xargs -0 -n1 node --check
+
+      - name: Start API
+        run: |
+          node src/server.js > server.log 2>&1 &
+          echo $! > server.pid
+
+      - name: Wait for API readiness
+        run: |
+          set -e
+          MAX_RETRIES=30
+          SLEEP_SECONDS=1
+
+          for i in $(seq 1 $MAX_RETRIES); do
+            if curl -sSf http://127.0.0.1:3000/ > /dev/null; then
+              echo "API is ready after $i attempt(s)."
+              exit 0
+            fi
+
+            echo "Attempt $i/$MAX_RETRIES: API not ready yet..."
+            sleep $SLEEP_SECONDS
+          done
+
+          echo "API did not become ready in time."
+          echo "--- server.log (tail) ---"
+          tail -n 100 server.log || true
+          exit 1
+
+      - name: Smoke test health endpoint
+        run: |
+          curl --fail http://127.0.0.1:3000/
+
+      - name: Smoke test swagger endpoint
+        run: |
+          curl --fail http://127.0.0.1:3000/api-docs
+
+      - name: Run Robot Framework suites
+        run: |
+          robot \
+            -d reports/robot \
+            --xunit reports/robot/xunit.xml \
+            --listener allure_robotframework:reports/allure-results \
+            tests
+
+      - name: Publish Robot test results
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Robot Framework Results
+          path: reports/robot/xunit.xml
+          reporter: java-junit
+          fail-on-error: true
+
+      - name: Stop API
+        if: always()
+        run: |
+          if [ -f server.pid ]; then
+            kill $(cat server.pid) || true
+          fi
+
+      - name: Show server logs on failure
+        if: failure()
+        run: cat server.log
+
+      - name: Upload Robot report artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: robot-reports
+          path: reports/robot
+          retention-days: 14
+
+      - name: Upload Allure raw results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: reports/allure-results
+          retention-days: 14

@@ -1,0 +1,26 @@
+[
+  {
+    "caseName": "Update existing study plan",
+    "existingPlan": true,
+    "initialName": "Plan Before Update",
+    "payload": { "name": "Plan After Update" },
+    "expectedStatus": 200,
+    "expectedName": "Plan After Update"
+  },
+  {
+    "caseName": "Update nonexistent study plan",
+    "existingPlan": false,
+    "planId": "plan_99999",
+    "payload": { "name": "Will Not Update" },
+    "expectedStatus": 404,
+    "expectedMessage": "Plan not found"
+  },
+  {
+    "caseName": "Update existing study plan with empty name",
+    "existingPlan": true,
+    "initialName": "Plan Empty Name",
+    "payload": { "name": "" },
+    "expectedStatus": 400,
+    "expectedMessage": "name cannot be empty"
+  }
+]

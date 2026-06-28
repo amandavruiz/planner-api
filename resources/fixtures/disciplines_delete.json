@@ -1,0 +1,14 @@
+[
+  {
+    "caseName": "Delete discipline",
+    "existingDiscipline": true,
+    "expectedStatus": 204
+  },
+  {
+    "caseName": "Delete nonexistent discipline",
+    "existingDiscipline": false,
+    "subjectId": "subject_99999",
+    "expectedStatus": 404,
+    "expectedMessage": "Subject not found for this plan"
+  }
+]

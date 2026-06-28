@@ -1,0 +1,34 @@
+[
+  {
+    "caseName": "Update discipline",
+    "existingDiscipline": true,
+    "payload": {
+      "name": "Updated Physics",
+      "topics": ["Kinematics", "Dynamics"],
+      "questionsSolved": 21
+    },
+    "expectedStatus": 200,
+    "expectedName": "Updated Physics",
+    "expectedTopicsCount": 2,
+    "expectedQuestionsSolved": 21
+  },
+  {
+    "caseName": "Update discipline with invalid questions",
+    "existingDiscipline": true,
+    "payload": {
+      "questionsSolved": -1
+    },
+    "expectedStatus": 400,
+    "expectedMessage": "questionsSolved must be an integer >= 0"
+  },
+  {
+    "caseName": "Update nonexistent discipline",
+    "existingDiscipline": false,
+    "subjectId": "subject_99999",
+    "payload": {
+      "name": "Will Not Update"
+    },
+    "expectedStatus": 404,
+    "expectedMessage": "Subject not found for this plan"
+  }
+]

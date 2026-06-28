@@ -1,0 +1,12 @@
+[
+  {
+    "caseName": "Total studied hours should sum sessions",
+    "sessions": [
+      { "date": "2026-06-24", "durationHours": 1.5 },
+      { "date": "2026-06-24", "durationHours": 2.0 }
+    ],
+    "expectedPlanTotalHours": 3.5,
+    "expectedDailyTotalHours": 3.5,
+    "expectedSessionsCount": 2
+  }
+]

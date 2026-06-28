@@ -1,0 +1,23 @@
+[
+  {
+    "caseName": "Add valid discipline",
+    "payload": {
+      "name": "History",
+      "topics": ["Brazil Empire"],
+      "questionsSolved": 15
+    },
+    "expectedStatus": 201,
+    "expectedName": "History",
+    "expectedTopicsCount": 1,
+    "expectedQuestionsSolved": 15
+  },
+  {
+    "caseName": "Add discipline without name",
+    "payload": {
+      "topics": ["World War"],
+      "questionsSolved": 10
+    },
+    "expectedStatus": 400,
+    "expectedMessage": "name is required"
+  }
+]

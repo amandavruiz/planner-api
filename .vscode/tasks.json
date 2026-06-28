@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Robot tests",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"$ErrorActionPreference='Stop'; $api = Start-Process -FilePath node -ArgumentList 'src/server.js' -WorkingDirectory 'c:\\Projetos\\pgats\\planner-api' -PassThru; Start-Sleep -Seconds 3; & 'C:/Users/amand/AppData/Local/Programs/Python/Python313/python.exe' -m robot -d reports/robot tests; $code=$LASTEXITCODE; Stop-Process -Id $api.Id -Force -ErrorAction SilentlyContinue; exit $code"
+			],
+			"problemMatcher": []
+		}
+	]
+}

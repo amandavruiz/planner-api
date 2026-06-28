@@ -1,0 +1,14 @@
+[
+  {
+    "caseName": "Add valid topic",
+    "topicName": "Functions",
+    "expectedStatus": 200,
+    "expectedTopicsCount": 2
+  },
+  {
+    "caseName": "Add topic without name",
+    "topicName": "",
+    "expectedStatus": 200,
+    "expectedTopicsCount": 1
+  }
+]

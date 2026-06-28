@@ -1,0 +1,8 @@
+[
+  {
+    "caseName": "Delete topic",
+    "topicName": "Statistics",
+    "expectedStatus": 200,
+    "expectedTopicsCount": 1
+  }
+]

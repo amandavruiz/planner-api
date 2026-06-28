@@ -1,0 +1,29 @@
+{
+  "plan": {
+    "valid": {
+      "name": "Plano QA API"
+    },
+    "empty_name": {
+      "name": ""
+    },
+    "update_valid": {
+      "name": "Plano QA API Atualizado"
+    }
+  },
+  "discipline": {
+    "valid": {
+      "name": "Mathematics",
+      "topics": ["Algebra"],
+      "questionsSolved": 10
+    },
+    "missing_name": {
+      "topics": ["Algebra"],
+      "questionsSolved": 10
+    },
+    "update_valid": {
+      "name": "Math",
+      "topics": ["Algebra", "Geometry"],
+      "questionsSolved": 22
+    }
+  }
+}

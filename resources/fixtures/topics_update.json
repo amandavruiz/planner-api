@@ -1,0 +1,9 @@
+[
+  {
+    "caseName": "Update topic",
+    "oldTopic": "Geometry",
+    "newTopic": "Analytic Geometry",
+    "expectedStatus": 200,
+    "expectedTopicsCount": 2
+  }
+]

@@ -1,0 +1,21 @@
+[
+  {
+    "caseName": "Create valid study plan",
+    "payload": { "name": "Study Plan ENEM" },
+    "expectedStatus": 201,
+    "expectedMessage": "",
+    "expectedName": "Study Plan ENEM"
+  },
+  {
+    "caseName": "Create study plan without name",
+    "payload": {},
+    "expectedStatus": 400,
+    "expectedMessage": "name is required"
+  },
+  {
+    "caseName": "Create study plan with empty name",
+    "payload": { "name": "" },
+    "expectedStatus": 400,
+    "expectedMessage": "name is required"
+  }
+]

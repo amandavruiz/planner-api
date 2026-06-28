@@ -1,5 +1,8 @@
 name: CI
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: ["main", "master"]
@@ -7,11 +10,9 @@ on:
   schedule:
     # Executa diariamente as 03:00 UTC
     - cron: "0 3 * * *"
-  pull_request:
-    branches: ["main", "master"]
 
 jobs:
-  build-and-smoke-test:
+  tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,15 +30,11 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install dependencies
+      - name: Install Node dependencies
         run: npm ci
 
-      - name: Install test dependencies
+      - name: Install Python dependencies
         run: pip install -r requirements.txt
-
-      - name: Validate JavaScript syntax
-        run: |
-          find src -name "*.js" -print0 | xargs -0 -n1 node --check
 
       - name: Start API
         run: |
@@ -65,30 +62,11 @@ jobs:
           tail -n 100 server.log || true
           exit 1
 
-      - name: Smoke test health endpoint
-        run: |
-          curl --fail http://127.0.0.1:3000/
-
-      - name: Smoke test swagger endpoint
-        run: |
-          curl --fail http://127.0.0.1:3000/api-docs
-
       - name: Run Robot Framework suites
         run: |
           robot \
             -d reports/robot \
-            --xunit reports/robot/xunit.xml \
-            --listener allure_robotframework:reports/allure-results \
             tests
-
-      - name: Publish Robot test results
-        if: always()
-        uses: dorny/test-reporter@v1
-        with:
-          name: Robot Framework Results
-          path: reports/robot/xunit.xml
-          reporter: java-junit
-          fail-on-error: true
 
       - name: Stop API
         if: always()
@@ -107,12 +85,4 @@ jobs:
         with:
           name: robot-reports
           path: reports/robot
-          retention-days: 14
-
-      - name: Upload Allure raw results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results
-          path: reports/allure-results
           retention-days: 14

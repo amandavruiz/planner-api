@@ -8,8 +8,8 @@ on:
     branches: ["main", "master"]
   workflow_dispatch:
   schedule:
-    # Executa diariamente as 03:00 UTC
-    - cron: "0 3 * * *"
+    # Executa diariamente as 18:30 UTC
+    - cron: "30 18 * * *"
 
 jobs:
   tests:
